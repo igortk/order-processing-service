@@ -1,0 +1,44 @@
+syntax = "proto3";
+import "message/error.proto";
+
+package bs;
+option go_package = "./proto";
+
+message EmmitBalanceByUserIdRequest{
+  string id = 1;
+  string user_id = 2;
+  string currency = 3;
+  double amount = 4;
+}
+
+message GetBalanceByUserIdRequest{
+  string id = 1;
+  string user_id = 2;
+}
+
+message GetAllPairRequest{
+  string id = 1;
+}
+
+message GetAllPairResponse{
+  string id = 1;
+  repeated string pairs = 2;
+}
+
+message GetBalanceByUserIdResponse{
+  string id = 1;
+  UserBalance user_balance = 2;
+  error.Error error = 3;
+}
+
+message UserBalance{
+  string user_id = 1;
+  repeated Balance balances = 2;
+}
+
+message Balance{
+  string currency = 1;
+  double balance = 2;
+  double locked_balance = 3;
+  int64 updated_date = 4;
+}

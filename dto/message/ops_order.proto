@@ -1,0 +1,63 @@
+syntax = "proto3";
+import "message/error.proto";
+
+package ops;
+option go_package = "./proto";
+
+message RemoveOrderRequest{
+  string id = 1;
+  string order_id = 2;
+}
+
+message GetUserOrdersRequest{
+  string id = 1;
+  string user_id = 2;
+}
+
+message CreateOrderRequest{
+  string id = 1;
+  string user_id = 2;
+  string order_id = 3;
+  string pair = 4;
+  double init_volume = 5;
+  double init_price = 6;
+  Direction direction = 7;
+}
+
+message GetUserOrdersResponse{
+  string id = 1;
+  repeated Order orders = 2;
+  error.Error error = 3;
+}
+
+message OrderUpdateEvent{
+  string id = 1;
+  Order order = 2;
+  repeated error.Error error = 3;
+}
+
+message Order{
+  string order_id = 1;
+  string user_id = 2;
+  string pair = 3;
+  double init_volume = 4;
+  double fill_volume = 5;
+  double init_price = 6;
+  OrderStatus status = 7;
+  Direction direction = 8;
+  int64 updatedDate = 9;
+  int64 createdDate = 10;
+}
+
+enum OrderStatus{
+  ORDER_STATUS_UNDEFINED = 0;
+  ORDER_STATUS_ACTIVE = 1;
+  ORDER_STATUS_MATCHED = 2;
+  ORDER_STATUS_REMOVED = 3;
+}
+
+enum Direction{
+  ORDER_DIRECTION_UNDEFINED = 0;
+  ORDER_DIRECTION_BUY = 1;
+  ORDER_DIRECTION_SELL = 2;
+}

@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package error;
+option go_package = "./proto";
+
+message Error{
+  int32 code = 1;
+  string message = 2;
+}

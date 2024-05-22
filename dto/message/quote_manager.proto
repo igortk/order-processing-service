@@ -1,0 +1,49 @@
+syntax = "proto3";
+import "message/error.proto";
+import "message/ops_order.proto";
+
+package qm;
+option go_package = "./proto";
+
+message GetExchangeRateRequest{
+  string id = 1;
+  string pair = 2;
+  Type type = 3;
+}
+
+//message GetUserOrdersRequest{
+//  string id = 1;
+//  string user_id = 2;
+//  repeated string orders_id = 3;
+//  Type type = 4;
+//}
+
+
+message ExchangeRate{
+  string pair = 1;
+  string min = 2;
+  string average = 3;
+  string max = 4;
+  ops.Direction direction = 5;
+}
+
+message ExchangeRateList {
+  repeated ExchangeRate rate = 1;
+}
+
+message GetExchangeRateResponse{
+  string id = 1;
+  map<string, ExchangeRateList> pairs = 2;
+  error.Error error = 3;
+}
+
+//message GetUserOrdersResponse{
+//  string id = 1;
+//  repeated ops.Order orders = 2;
+//}
+
+enum Type{
+  ORDER_DIRECTION_UNDEFINED = 0;
+  ORDER_ALL = 1;
+  ORDER_SINGLE = 2;
+}
