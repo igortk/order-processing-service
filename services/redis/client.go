@@ -73,24 +73,23 @@ func (rc *Client) GetOrdersFromRedis(ctx context.Context) []*proto.Order {
 	log.Println(userIDs)
 	var orders []*proto.Order
 	for _, orderId := range userIDs {
+		log.Infof("sercher +%s", orderId)
 		orderData, err := rc.client.HGetAll(ctx, fmt.Sprintf("order:%s", orderId)).Result()
 		util.IsError(err, fmt.Sprintf("failed get order [id: %s]", orderId))
 
-		if proto.OrderStatus(convertToInt64(orderData["status"])) != proto.OrderStatus_ORDER_STATUS_MATCHED {
-			order := &proto.Order{
-				OrderId:     orderId,
-				UserId:      orderData["user_id"],
-				Pair:        orderData["pair"],
-				InitVolume:  convertToFloat(orderData["init_volume"]),
-				FillVolume:  convertToFloat(orderData["fill_volume"]),
-				InitPrice:   convertToFloat(orderData["init_price"]),
-				Status:      proto.OrderStatus(convertToInt64(orderData["status"])),
-				Direction:   proto.Direction(convertToInt64(orderData["direction"])),
-				UpdatedDate: convertToInt64(orderData["updated_date"]),
-				CreatedDate: convertToInt64(orderData["created_date"]),
-			}
-			orders = append(orders, order)
+		order := &proto.Order{
+			OrderId:     orderId,
+			UserId:      orderData["user_id"],
+			Pair:        orderData["pair"],
+			InitVolume:  convertToFloat(orderData["init_volume"]),
+			FillVolume:  convertToFloat(orderData["fill_volume"]),
+			InitPrice:   convertToFloat(orderData["init_price"]),
+			Status:      proto.OrderStatus(convertToInt64(orderData["status"])),
+			Direction:   proto.Direction(convertToInt64(orderData["direction"])),
+			UpdatedDate: convertToInt64(orderData["updated_date"]),
+			CreatedDate: convertToInt64(orderData["created_date"]),
 		}
+		orders = append(orders, order)
 
 	}
 

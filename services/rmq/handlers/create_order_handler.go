@@ -37,7 +37,7 @@ func (h CreateOrderHandler) HandleMessage(body []byte) {
 	util.ValidateCreateOrderRequest(&errors, req)
 
 	respBalance := h.getBalanceByUserId(req.UserId)
-	log.Info(respBalance)
+	log.Infof("UserBalance +%s", respBalance)
 	util.ValidateUserBalance(&errors, req, respBalance)
 
 	newOrderEvent := h.createFirstEvent(req, errors)
